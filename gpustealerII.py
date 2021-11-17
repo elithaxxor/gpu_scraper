@@ -3,6 +3,10 @@ import os
 import re
 import time
 import random
+import sys
+import subprocess
+import platform
+import traceback
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -76,9 +80,7 @@ reset = color.reset
 
 
 
-
 class Prettify():
-
     class Spinner:
         busy = False
         delay = 0.1
@@ -130,8 +132,8 @@ class Prettify():
         x = 'x'
         print(f"{'X' * 125:^70}")
         print(f"{'X' * 125:^70}")
-        pretty = f'{red0}xxx FILE-MOVER xxx{reset0}'.center(width)
-        print(f'{pretty : ^70}')
+       # pretty = f'{red0}xxx FILE-MOVER xxx{reset0}'.center(width)
+       # print(f'{pretty : ^70}')
         print(f"{'X' * 125: ^70}")
 
         one = (
@@ -176,43 +178,61 @@ class Prettify():
         _ = call('clear' if os_name == 'Linux' or 'Windows' or 'Darwin' else 'cls')
 
 
-class install_dependant():
+class install_dependants():
     def __init__(self):
-        def install(self):
-            try:
-                sucessfull_install = []
-                subprocess.check_call([sys.executable, "-m", "pip", "install", threading])
-                if subprocess.check_call:
-                    print(f'{yellow} Sucessfully Installed PIP')
-                    sucessfull_install.append('pip')
-                subprocess.check_call([sys.executable, "-m", "tqdm", "install", tqdm])
-                if subprocess.check_call:
-                    print(f'{yellow} Sucessfully Installed TQDM')
-                    sucessfull_install.append('TQDM')
-                subprocess.check_call([sys.executable, "-m", "pip", "datetime", datetime])
-                if subprocess.check_call:
-                    print(f'{yellow} Sucessfully Installed datetime')
-                    sucessfull_install.append('datetime')
-                subprocess.check_call([sys.executable, "-m", "pip", "net-tools", net - tools])
-                if subprocess.check_call:
-                    print(f'{yellow} Sucessfully Installed datetime')
-                    sucessfull_install.append('net-tools')
-                subprocess.check_call([sys.executable, "-m", "apt install", "airmon-ng", airmon - ng])
-                if subprocess.check_call:
-                    print(f'{yellow} Sucessfully Installed airmon-ng')
-                    sucessfull_install.append('airmong-ng')
-                print(f'{yellow}**Installed Dependencies {reset}\n{sucessfull_install}')
+        self.subprocess = subprocess.check_call
+        #self.subprocess.Popen = subprocess.Popen()
+        self.subprocess.check_call = subprocess.check_call
+    def __enter__(self):
+        print('enter method called')
+        return self
 
-            except subprocess.CalledProcessError as sub0:
-                traceback.print_exc()
-                print(f'{red} SUBPROCESS CALL ERROR {reset}\n{str(sub0)}')
-            except subprocess.TimeoutExpired as sub1:
-                traceback.print_exc()
-                print(f'{red} SUBPROCESS CALL ERROR {reset}\n{str(sub1)}')
-            except subprocess.SubprocessError as sub2:
-                traceback.print_exc()
-                print(f'{red} SUBPROCESS CALL ERROR {reset}\n{str(sub2)}')
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        print('exit method called')
+        print(f'****[{self}],\n ***[{exc_type}],\n**[{exc_value}],\n*[{exc_traceback}]')
 
+    def install_plugins(self):
+        print('**[INIATING DEPENDENCY INSTALLATION]**')
+        global sucessfull_install
+        try:
+            sucessfull_install = []
+            subprocess.check_call([sys.executable, "-m", "pip", "install", 'threading'])
+            if subprocess.check_call:
+                print(f'{yellow} Sucessfully Installed PIP')
+                sucessfull_install.append('pip')
+                return f'Parsed {sucessfull_install}'
+
+            subprocess.check_call([sys.executable, "-m", "tqdm", "install", 'tqdm'])
+            if subprocess.check_call:
+                print(f'{yellow} Sucessfully Installed TQDM')
+                sucessfull_install.append('TQDM')
+            subprocess.check_call([sys.executable, "-m", "pip", "datetime", 'datetime'])
+            if subprocess.check_call:
+                print(f'{yellow} Sucessfully Installed datetime')
+                sucessfull_install.append('datetime')
+            subprocess.check_call([sys.executable, "-m", "pip", "net-tools", 'net-tools'])
+            if subprocess.check_call:
+                print(f'{yellow} Sucessfully Installed datetime')
+                sucessfull_install.append('net-tools')
+            subprocess.check_call([sys.executable, "-m", "apt install", "airmon-ng", 'airmon-ng'])
+            if subprocess.check_call:
+                print(f'{yellow} Sucessfully Installed airmon-ng')
+                sucessfull_install.append('airmong-ng')
+            print(f'{yellow}**Installed Dependencies {reset}\n{sucessfull_install}')
+
+            return f'Parsed {sucessfull_install}'
+
+        except subprocess.CalledProcessError as sub0:
+            traceback.print_exc()
+            print(f'{red} SUBPROCESS CALL ERROR {reset}\n{str(sub0)}')
+
+        except subprocess.TimeoutExpired as sub1:
+            traceback.print_exc()
+            print(f'{red} SUBPROCESS CALL ERROR {reset}\n{str(sub1)}')
+
+        except subprocess.SubprocessError as sub2:
+            traceback.print_exc()
+            print(f'{red} SUBPROCESS CALL ERROR {reset}\n{str(sub2)}')
 
 
 
@@ -225,19 +245,18 @@ class BestBuy_ripper(webdriver.Chrome):
     OS = os.name
     print(OS, 111111)
     # driver = webdriver.Chrome(options=chrome_options, executable_path= r'/Users/macbook/Documents/CS/PROJECT/AutoDownloader/TEST_DOWNLOADS/fileexteniontest.torrenttorrent.torrent/chromedriver')
-    executable_path = r"/Users/a-robot/Documents/CS/PROJECT/GPU_JACKER/"
+    executable_path = "/Users/a-robot/PycharmProjects/pythonProject/gpu_venv"
     os.environ['PATH'] += executable_path
-
     chrome_options = Options
 
-    def __init__(self, executable_path=r"/Users/a-robot/Documents/CS/PROJECT/GPU_JACKER/", teardown=False):
+    def __init__(self, executable_path="/Users/a-robot/PycharmProjects/pythonProject/gpu_venv", teardown=False):
         super(BestBuy_ripper, self).__init__()
-        self.os.environ['PATH'] += executable_path
+        #self.os.environ['PATH'] += executable_path
 
         # driver = webdriver.Chrome(options=chrome_options, executable_path= r'/Users/macbook/Documents/CS/PROJECT/AutoDownloader/TEST_DOWNLOADS/fileexteniontest.torrenttorrent.torrent/chromedriver')
         self.implicitly_wait(20)
         self.executable_path = executable_path
-        self.os.environ['PATH'] += self.executable_path
+        # self.os.environ['PATH'] += self.executable_path
         self.implicitly_wait(15)
         self.maximize_window()
         self.By = By
@@ -257,15 +276,16 @@ class BestBuy_ripper(webdriver.Chrome):
 
         pass
 
-
-
-    def login(self):
-
+    def install_plugin(self):
         chrome_options = Options()
-        chrome_options.add_extension(
-            "/Users/a-robot/Documents/CS/PROJECT/GPU_JACKER/ad_blocker.crx")
-        driver = webdriver.Chrome(chrome_options=chrome_options)
-        time.sleep(10)
+        chrome_options.add_extension("/Users/a-robot/PycharmProjects/pythonProject/gpu_venv/ad_blocker.crx")
+        self.driver = webdriver.Chrome(chrome_options=chrome_options)
+        if self.driver:
+            print(f'{yellow}[ADBLOCKER INSTALLATION -- SUCCESSFUL]{reset}')
+        else:
+            print(f'{red}[ADBLOCKER INSTALLATION -- UNSUCCESSFUL]{reset}')
+
+        time.sleep(3)
         self.get(BB.URL)
         self.implicitly_wait(15)
         time.sleep(timer)
@@ -275,13 +295,68 @@ class BestBuy_ripper(webdriver.Chrome):
 
         nav_click = self.find_element_by_xpath('//*[@id="site-control-content"]')
         nav_click.click()
+        print('Exiting install plugin module')
 
 
     def login_info(self):
-        #self.get(BB.URL)
-        nav_copy = self.find_element_by_xpath('//*[@id="site-control-content"]')
-        nav_copy.click()
+        self.implicitly_wait(15)
+        counter = 1
+        print('X'*50)
+        print(f'[{counter}]{yellow} **[Starting BBY Sequence]**{reset}')
+        time.sleep(2)
+        self.get(BB.URL)
+        if self.get:
+            print(f'{yellow}[{counter}]** [Successfully loaded BBY page]{reset}')
+        else:
+            print(f'{red}[{counter}]** [FAILED TO LOAD BBY PAGE] **{reset}')
 
+        print()
+        print('X'*50)
+        try:
+            print(f'[{counter}]{yellow} **[Moving Display Banner]**{reset}')
+            nav_copy = self.find_element_by_xpath('//*[@id="site-control-content"]')
+            nav_copy.click()
+            if nav_copy.click():
+                print(f'{yellow}[{counter}]** [Successfully Averted Banner] **{reset}')
+            else:
+                print(f'{red}[{counter}]** [Failed to Avert Banner] **{reset}')
+            print('X'*50)
+            print()
+        except Exception as e:
+            print(f'{red}[{counter}]** [Failed to Avert Banner] **{reset}\n {str(e)}')
+            print('X'*50)
+            print()
+
+    def first_page(self):
+        print(f'**[PARSING GPU SEQUENCE]\n{yellow}*[NVIDIA GeForce RTX 3070 8GB GDDR6 PCI Express 4.0 Graphics Card - Dark Platinum and Black]{reset} ')
+        self.get(BB.URL01)
+        if self.get(BB.URL01):
+            print(f'{yellow}**[RTX-3070 (8gb) Loaded{reset}')
+        else:
+            print(f'{red}**[FAIL TO LOAD] -- [RTX-3070 (8gb) {reset}')
+
+
+    def iterate(self): ## may need to fix logix here
+        try:
+            time.sleep(2)
+            ret = WebDriverWait(self, timer).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, ".add-to-cart-button")))
+            ret.click()
+            if ret.click():
+                return 'True'
+        except Exception as fail:
+            print('error in checkout box iteration', str(fail))
+            self.refresh()
+    def click_thru_page(self):
+        self.get("https://www.bestbuy.com/cart")
+
+        checkoutBtn = WebDriverWait(self, 10).until(
+            EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/main/div/div[2]/div[1]/div/div/span/div/div[2]/div[1]/section[2]/div/div/div[3]/div/div[1]/button")).click())
+        if checkoutBtn == True:
+            print("Successfully added to cart")
+
+
+    def parse_login(self):
         nav_click00 = self.find_element_by_xpath(r'/html/body/div[2]/div/div/div[1]/header/div[2]/nav/ul/li[1]/div/button/span')
         nav_click00.click()
         print('1111')
@@ -289,8 +364,6 @@ class BestBuy_ripper(webdriver.Chrome):
         nav_click01 = self.find_element_by_xpath(r'/html/body/div[2]/div/div/div[1]/header/div[2]/nav/ul/li[1]/div/div/div/div[1]/div/div/div/div/div/a[1]')
         nav_click01.click()
 
-
-        print('2222')
         time.sleep(3)
 
         email_login = self.find_element_by_id("fld-e")
@@ -302,49 +375,19 @@ class BestBuy_ripper(webdriver.Chrome):
         pword_login.click()
         print('4444444')
 
-
         final_click = self.find_element_by_xpath("/html/body/div[1]/div/section/main/div[2]/div[1]/div/div/div/div/div/form/div[4]/button")
         final_click.click()
 
         print('555555555')
 
         pword_login.send_keys(BBL.PASS, Keys.ENTER)
-        #pword_login.send
-
-
+        pword_login.click()
         time.sleep(5)
 
-
-    def first_page(self):
-        self.get(BB.URL01)
-        print('Successfully Logged In')
-
-    def iterate(self):
-        try:
-            time.sleep(2)
-            ret = WebDriverWait(self, timer).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, ".add-to-cart-button")))
-            ret.click()
-            if ret.click():
-                return 'True'
-
-        except Exception as fail:
-            print('error in checkout box iteration', str(fail))
-            self.refresh()
-
-    def click_thru_page(self):
-        self.get("https://www.bestbuy.com/cart")
-
-        checkoutBtn = WebDriverWait(self, 10).until(
-            EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/main/div/div[2]/div[1]/div/div/span/div/div[2]/div[1]/section[2]/div/div/div[3]/div/div[1]/button")).click())
-
-        if checkoutBtn == True:
-            print("Successfully added to cart")
 
         ############ EMAIL FIELD ##############
         ############ EMAIL FIELD ##############
     def send_email(self): ## add email / password
-
         emailField = WebDriverWait(self, 10).until(
             EC.presence_of_element_located((By.ID, "fld-e")).send_keys(bbyemail.ADDR))
 
