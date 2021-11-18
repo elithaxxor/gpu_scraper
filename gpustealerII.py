@@ -15,6 +15,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver import Chrome
 from selenium.common.exceptions import NoSuchElementException
+
+
+from webdriver_manager.chrome import ChromeDriverManager
+
+
 import bbywebsite as BB
 from bbywebsite import *
 import bbyemail as BBL
@@ -237,23 +242,27 @@ class install_dependants():
 
 
 
-class BestBuy_ripper(webdriver.Chrome):
+#class BestBuy_ripper(webdriver.Chrome):
+class BestBuy_ripper (webdriver.Chrome(ChromeDriverManager().install())):
     # cart_wait = WebDriverWait
     global timer
     timer = random.randrange(5.0, 8.0)
     global OS
     OS = os.name
     print(OS, 111111)
-    # driver = webdriver.Chrome(options=chrome_options, executable_path= r'/Users/macbook/Documents/CS/PROJECT/AutoDownloader/TEST_DOWNLOADS/fileexteniontest.torrenttorrent.torrent/chromedriver')
-    executable_path = "/Users/a-robot/PycharmProjects/pythonProject/gpu_venv"
+   # chrome_options = Options
+   # driver = webdriver.Chrome(options=chrome_options, executable_path= r"/home/frank/PycharmProjects/pythonProject/gpu_scraper-main_pi/chromedriver")
+    executable_path = r"/home/frank/PycharmProjects/pythonProject/gpu_scraper-main_pi/chromedriver"
     os.environ['PATH'] += executable_path
-    chrome_options = Options
 
-    def __init__(self, executable_path="/Users/a-robot/PycharmProjects/pythonProject/gpu_venv", teardown=False):
+    def __init__(self, executable_path=r"/home/frank/PycharmProjects/pythonProject/gpu_scraper-main_pi/chromedriver", teardown=False):
         super(BestBuy_ripper, self).__init__()
-        #self.os.environ['PATH'] += executable_path
+        #self.os.environ['PATH'] += executable_path'
 
-        # driver = webdriver.Chrome(options=chrome_options, executable_path= r'/Users/macbook/Documents/CS/PROJECT/AutoDownloader/TEST_DOWNLOADS/fileexteniontest.torrenttorrent.torrent/chromedriver')
+        #self.driver = webdriver.Chrome(ChromeDriverManager().install())
+
+        # driver = webdriver.Chrome(options=chrome_options, executable_path= r"/home/frank/PycharmProjects/pythonProject/gpu_scraper-main_pi")
+        # self.driver = webdriver.Chrome(options=chrome_options, executable_path= r"/home/frank/PycharmProjects/pythonProject/gpu_scraper-main_pi")
         self.implicitly_wait(20)
         self.executable_path = executable_path
         # self.os.environ['PATH'] += self.executable_path
@@ -278,7 +287,7 @@ class BestBuy_ripper(webdriver.Chrome):
 
     def install_plugin(self):
         chrome_options = Options()
-        chrome_options.add_extension("/Users/a-robot/PycharmProjects/pythonProject/gpu_venv/ad_blocker.crx")
+        chrome_options.add_extension("/home/frank/PycharmProjects/pythonProject/gpu_scraper-main_pi/ad_blocker.crx")
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
         if self.driver:
             print(f'{yellow}[ADBLOCKER INSTALLATION -- SUCCESSFUL]{reset}')
@@ -415,6 +424,25 @@ class BestBuy_ripper(webdriver.Chrome):
         cvvField.send_keys(info.cvv)
         print("Attempting to place order")
         complete = false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
